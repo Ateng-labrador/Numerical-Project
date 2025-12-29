@@ -127,6 +127,15 @@ def subti_forward(U, b):
     return x
 
 
+def copy(A):
+    res = []
+    for i in range(len(A)):
+        row = []
+        for j in range(len(A)):
+            row.append(A[i][j])
+        res.append(row)
+    return res
+
 def LU(A):
     """
     Fungsi Untuk membuat segitiga atas dan segitiga bawah
@@ -141,7 +150,7 @@ def LU(A):
     """
     n = len(A)
     L = identity(n)
-    U = np.copy(A)
+    U = copy(A)
 
     for k in range(n-1):
         for i in range(k+1, n):
