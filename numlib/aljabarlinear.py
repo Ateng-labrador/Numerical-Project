@@ -1,8 +1,10 @@
 import numpy as np
-import math 
+import math
+from typing import Union
+from util import error as error
 
 
-def identity(n : int = 2):
+def identity(n : int = 2) -> list[list[Union[int, float]]]:
     """
     Fungsi untuk membuat matriks identitas
 
@@ -24,7 +26,7 @@ def identity(n : int = 2):
     return matriks
 
 
-def zeros(n : int = 2):
+def zeros(n : int , m : int = None) -> list[list[Union[int, float]]]:
     """
     Fungsi untuk membuat matriks nol
 
@@ -35,15 +37,23 @@ def zeros(n : int = 2):
     matriks : matriks nol
     """
     matriks = []
-    for _ in range(n):
-        row = []
+    if m == None:
         for _ in range(n):
-            row.append(0)
-        matriks.append(row)
-    return matriks
+            row = []
+            for _ in range(n):
+                row.append(0)
+            matriks.append(row)
+        return matriks
+    else:
+        for _ in range(n):
+            row = []
+            for _ in range(m):
+                row.append(0)
+            matriks.append(row)
+        return matriks
 
 
-def dot(A, B):
+def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
     """
     Fungsi untuk melakukan perkalian dot
 
@@ -60,7 +70,8 @@ def dot(A, B):
     return res
 
 
-def cross(A, B):
+def cross(A : Union[int, float],
+          B : Union[int, float]) -> Union[int, float]:
     """
     Fungsi untuk operasi cross product
     
@@ -82,10 +93,13 @@ def cross(A, B):
             A[1]*B[2] - A[2]*A[1]
         ]
     else:
-        return IndexError("Panjang melebihi")
+        return error.IndeksError("panjang tidak sesuai")
     
 
-def gauss_back_elim(A, b):
+def gauss_back_elim(
+        A : list[list[Union[int, float]]],
+        b : list[list[Union[int, float]]]
+        ) -> list[Union[int, float]]:
     """
     Fungsi untuk melakukan eliminasi gauss
 
@@ -117,7 +131,8 @@ def gauss_back_elim(A, b):
     return x
 
 
-def subti_forward(U, b):
+def subti_forward(U : list[list[Union[int, float]]],
+                  b : list[Union[int, float]]) -> list[Union[int, float]]:
     x = [0] * len(b)
     for i in range(len(b)-1, -1, -1):
         sum = b[i]
@@ -127,7 +142,12 @@ def subti_forward(U, b):
     return x
 
 
-def copy(A):
+def copy(A : Union[int, float]) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan copy matriks
+
+
+    """
     res = []
     for i in range(len(A)):
         row = []
@@ -136,7 +156,7 @@ def copy(A):
         res.append(row)
     return res
 
-def LU(A):
+def LU(A : list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
     """
     Fungsi Untuk membuat segitiga atas dan segitiga bawah
 
@@ -160,3 +180,112 @@ def LU(A):
             for j in range(k, n):
                 U[i, j] -= L[i, k] * U[k, j]
     return L, U
+
+def penjumlahan(
+        A : list[list[Union[int, float]]],
+        B : list[list[Union[int, float]]]
+) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan kalkulasi penjumlahan 2 matriks
+
+    Parameter :
+    A(int, float) : Matriks pertama
+    B(int, float) : Matriks kedua
+
+    return :
+    result(int, float) : hasil kalkulasi
+    """
+    if len(A) != len(B):
+        return error.IndeksError("Ukuran tidak sama")
+    else:
+        result = []
+        for i in range(len(A)):
+            row = []
+            for j in range(len(A)):
+                op = A[i][j] + B[i][j]
+                row.append(op)
+            result.append(op)
+        return result
+    
+
+def pengurangan(
+        A : list[list[Union[int, float]]],
+        B : list[list[Union[int, float]]]
+) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan kalkulasi pengurangan 2 matriks
+
+    Parameter :
+    A(int, float) : Matriks pertama
+    B(int, float) : Matriks kedua
+
+    return :
+    result(int, float) : hasil kalkulasi
+    """
+    if len(A) != len(B):
+        return ValueError("Ukuran Matriks Harus Sama")
+    else:
+        result = []
+        for i in range(len(A)):
+            row = []
+            for j in range(len(A)):
+                op = A[i][j] - B[i][j]
+                row.append(op)
+            result.append(op)
+        return result
+
+
+def perkalian(
+        A : list[list[Union[int, float]]],
+        B : list[list[Union[int, float]]]
+) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan kalkulasi perkalian 2 matriks
+
+    Parameter :
+    A(int, float) : Matriks pertama
+    B(int, float) : Matriks kedua
+
+    return :
+    result(int, float) : hasil kalkulasi
+    """
+    baris1 = len(A)
+    kolom1 = len(A[0])
+    baris2 = len(B)
+    kolom2 = len(B[0])
+    if kolom1 != baris2:
+        return error.IndeksError("kolom dan baris harus sama")
+    result = zeros(baris1, kolom2)
+    for i in range(baris1):
+        for j in range(kolom2):
+            for k in range(kolom1):
+                result[i][j] += A[i][k] * B[k][j]
+    return result
+
+def perkalian_skalar_matriks(
+        matriks : list[list[Union[int, float]]],
+        x : Union[int, float]
+) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan kalkulasi perkalian skalar matriks
+
+    Parameter :
+    Matriks(int, float) : Matriks
+    x(int, float) : skalar
+
+    return :
+    result(int, float) : hasil kalkulasi
+    """
+    result = []
+    n = len(matriks)
+    for i in range(n):
+        row = []
+        for j in range(n):
+            multi = x * matriks[i][j]
+            row.append(multi)
+        result.append(row)
+    return result
+
+
+if __name__ == "__main__":
+    pass
