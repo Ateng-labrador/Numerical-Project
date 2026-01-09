@@ -31,7 +31,8 @@ def zeros(n : int , m : int = None) -> list[list[Union[int, float]]]:
     Fungsi untuk membuat matriks nol
 
     parameter:
-    n : ukuran matris n x n
+    n : kolom
+    m : baris (None)
 
     return:
     matriks : matriks nol
@@ -283,6 +284,48 @@ def perkalian_skalar_matriks(
             row.append(multi)
         result.append(row)
     return result
+
+
+def rotation(matriks : list[list[Union[int, float]]],
+             rotasi = 90) -> list[list[Union[int, float]]]:
+    """
+    Fungsi untuk melakukan rotasi 90 dan 180.
+
+    parameter:
+    A = matriks
+    rotasi = 90 dan 180
+
+    """
+
+    if rotasi == 90:
+        baris1 = len(matriks[0])
+        kolom1 = len(matriks)
+        # reverse the order of rows
+        matriks = matriks[::-1]
+        result = zeros(kolom1, baris1)
+
+        for i in range(baris1):
+            for j in range(kolom1):
+                result[i][j] = matriks[j][i]
+        return result
+    if rotasi == 180:
+        # reverse the order of rows
+        # matriks pertama
+        matriks = matriks[::-1]
+        result1 = zeros(kolom1, baris1)
+        # matriks kedua
+        matriks1 = result1[::-1]
+        result_f = zeros(kolom1, baris1)
+
+        for i in range(baris1):
+            for j in range(kolom1):
+                result[i][j] = matriks[j][i]
+        for i in range(baris1):
+            for j in range(kolom1):
+                result_f[i][j] = matriks1[j][i]
+        return result_f
+    else:
+        return error.IndeksError("Indeks tidak terdefinisi")
 
 
 if __name__ == "__main__":
