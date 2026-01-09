@@ -145,8 +145,6 @@ def subti_forward(U : list[list[Union[int, float]]],
 def copy(A : Union[int, float]) -> list[list[Union[int, float]]]:
     """
     Fungsi untuk melakukan copy matriks
-
-
     """
     res = []
     for i in range(len(A)):
