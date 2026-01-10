@@ -27,7 +27,7 @@ def identity(n : int = 2) -> list[list[Union[int, float]]]:
     return matriks
 
 
-def zeros(n : int , m : int = None) -> list[list[Union[int]]]:
+def zeros(n : int , m : int = None) -> list[list[int]]:
     """
     Fungsi untuk membuat matriks nol
 
@@ -50,6 +50,7 @@ def zeros(n : int , m : int = None) -> list[list[Union[int]]]:
                 row.append(0)
             matriks.append(row)
         return matriks
+
 
 
 def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
@@ -215,6 +216,14 @@ def perkalian_skalar_matriks(
     return result
 
 
+def transpose(A: list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
+    """
+    
+    """
+    x = [[A[j][i] for j in range(len(A))] for i in range(len(A[0]))]
+    return x
+
+
 def gauss_back_elim(
         A : list[list[Union[int, float]]],
         b : list[list[Union[int, float]]]
@@ -299,48 +308,71 @@ def LDLT_decomposition(A : list[list[Union[int, float]]]) -> list[list]:
     Fungsi Untuk Melakukan faktorisasi LDLT composition
     A = LDL^T
 
-    harus matriks simetri
+    Parameter :
+    A = matriks non-singular
+
+    return :
+    L = matriks segitiga bawah
+    d = matriks diagonal
+    Lt = matriks segitiga bawah yang di transposekan
     """
-    n = len(A)
-    L = zeros(n, n)
-    d = zeros(n)
-
-    for i in range(n):
-        sum_val = 0.0
-        for k in range(i):
-            sum_val += (L[i][k] ** 2) * d[k]
-        d[i] = A[i][i] - sum_val
-
-        for j in range(i + 1, n):
+    if transpose(A) == A:
+        n = len(A)
+        L = zeros(n, n)
+        d = zeros(n)
+        for i in range(n):
             sum_val = 0.0
             for k in range(i):
-                sum_val += L[j][k] * L[i][k] * d[k]
-            L[j][i] = (A[j][i] - sum_val) / d[i]
-        L[i][i] = 1
+                sum_val += (L[i][k] ** 2) * d[k]
+            d[i] = A[i][i] - sum_val
 
-    Lt = [[L[j][i] for j in range(n)] for i in range(len(A[0]))]
-    return L, d, Lt
+            for j in range(i + 1, n):
+                sum_val = 0.0
+                for k in range(i):
+                    sum_val += L[j][k] * L[i][k] * d[k]
+                L[j][i] = (A[j][i] - sum_val) / d[i]
+            L[i][i] = 1
+
+        Lt = [[L[j][i] for j in range(n)] for i in range(len(A[0]))]
+        return L, d, Lt
+    else:
+        return error.Error("Matriks Tidak simetri")
 
 
-def cholesky_decomposition(A):
+def cholesky_decomposition(A : list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
     """
+    Fungsi untuk melakukan decomposition cholesky
+    yang akan membuat faktorisasi A = G * Gt
+
+    Parameter:
+    A = matriks non-singular dan simetri
+    return:
+    G = matriks segitiga bawah
+    Gt = matriks segitiga bawah yang di trasnpose
     """
-    n = len(A)
-    G = np.zeros_like(A, dtype=float)
+    if transpose(A) == A:
+        n = len(A)
+        G = zeros(n, n)
+        for i in range(n):
+            for j in range(i + 1):
+                sum = 0
+                if j == i:
+                    for k in range(j):
+                        sum += G[j][k] * G[j][k]
+                    G[j][j] = (A[j][j] - sum)**(1/2)
+                else:
+                    for k in range(j):
+                        sum += G[i][k] * G[j][k]
+                    G[i][j] = (A[i][j] - sum) // G[j][j]
+        Gt = transpose(G)
+        return G, Gt
+    else :
+        return error.Error("Matriksnya tidak simetri")
 
-    for i in range(n):
-        for j in range(i + 1):
-            if i == j:
-                G[i][j] = np.sqrt(A[i][i] - np.sum(G[i][k]**2 for k in range(j)))
-            else:
-                G[i][j] = (A[i][j] - np.sum(G[i][k] * G[i][k] for k in range(j))) / G[j][j]
-        if G[j][j] <= 0:
-            return None
-    return G
 
-
-def solve_LU_system(n, A):
+def LU_tridiagonal(n, A):
     """
+    Masih perlu di tinjau
     """
     L = np.zeros((n, n))
     U = np.eye(n)
@@ -413,3 +445,4 @@ def rotation(matriks : list[list[Union[int, float]]],
 
 if __name__ == "__main__":
     pass
+    
