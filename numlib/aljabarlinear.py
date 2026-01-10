@@ -298,7 +298,8 @@ def LDLT_decomposition(A : list[list[Union[int, float]]]) -> list[list]:
     """
     Fungsi Untuk Melakukan faktorisasi LDLT composition
     A = LDL^T
-    
+
+    harus matriks simetri
     """
     n = len(A)
     L = zeros(n, n)
@@ -321,6 +322,54 @@ def LDLT_decomposition(A : list[list[Union[int, float]]]) -> list[list]:
     return L, d, Lt
 
 
+def cholesky_decomposition(A):
+    """
+    """
+    n = len(A)
+    G = np.zeros_like(A, dtype=float)
+
+    for i in range(n):
+        for j in range(i + 1):
+            if i == j:
+                G[i][j] = np.sqrt(A[i][i] - np.sum(G[i][k]**2 for k in range(j)))
+            else:
+                G[i][j] = (A[i][j] - np.sum(G[i][k] * G[i][k] for k in range(j))) / G[j][j]
+        if G[j][j] <= 0:
+            return None
+    return G
+
+
+def solve_LU_system(n, A):
+    """
+    """
+    L = np.zeros((n, n))
+    U = np.eye(n)
+    l11 = A[0, 0]
+    u12 = A[0, 1] / l11
+    z1 = A[0, -1] / l11
+
+    L[0, 0] = l11
+    U[0, 1] = u12
+    z = np.zeros(n)
+    z[0] = z1
+    for i in range(1, n-1):
+        L[i, i-1] = A[i, i-1]
+        L[i, i] = A[i, i] - L[i, i-1] * U[i-1, i]
+        U[i, i+1] = A[i, i+1] / L[i, i]
+        z[i] = (A[i, -1] - L[i, i-1] * z[i-1]) / L[i, i]
+    
+    L[n-1, n-2] = A[n-1, n-2]
+    L[n-1, n-1] = A[n-1, n-1] - L[n-1, n-2] * U[n-2, n-1]
+    z[n-1] = (A[n-1, -1] - L[n-1, n-2] * z[n-2]) / L[n-1, n-1]
+
+    x = np.zeros(n)
+    x[n-1] = z[n-1]
+
+    for i in range(n-2, -1, -1):
+        x[i] = z[i] - U[i, i+1] * x[i+1]
+    return x, L, U
+
+
 def rotation(matriks : list[list[Union[int, float]]],
              rotasi = 90) -> list[list[Union[int, float]]]:
     """
@@ -331,7 +380,6 @@ def rotation(matriks : list[list[Union[int, float]]],
     rotasi = 90 dan 180
 
     """
-
     if rotasi == 90:
         baris1 = len(matriks[0])
         kolom1 = len(matriks)
