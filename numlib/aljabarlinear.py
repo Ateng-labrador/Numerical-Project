@@ -5,6 +5,15 @@ from util import error as error
 import matfuctions as mathf
 
 
+
+
+def _array_square(A):
+    A = np.asarray(A)
+    if len(A.shape) != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError('input nya tidak sesuai array')
+    return A
+
+
 def identity(n : int = 2) -> list[list[Union[int, float]]]:
     """
     Fungsi untuk membuat matriks identitas
@@ -51,6 +60,10 @@ def zeros(n : int , m : int = None) -> list[list[int]]:
             matriks.append(row)
         return matriks
 
+
+def pauli_matriks(A):
+    A = _array_square(A)
+    
 
 
 def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
@@ -441,6 +454,8 @@ def rotation(matriks : list[list[Union[int, float]]],
         return result_f
     else:
         return error.IndeksError("Indeks tidak terdefinisi")
+
+
 
 
 if __name__ == "__main__":
