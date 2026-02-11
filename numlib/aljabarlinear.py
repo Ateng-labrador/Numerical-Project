@@ -5,9 +5,10 @@ from util import error as error
 import matfuctions as mathf
 
 
-
-
 def _array_square(A):
+    """
+    Mengubah menjadi array
+    """
     A = np.asarray(A)
     if len(A.shape) != 2 or A.shape[0] != A.shape[1]:
         raise ValueError('input nya tidak sesuai array')
@@ -61,9 +62,27 @@ def zeros(n : int , m : int = None) -> list[list[int]]:
         return matriks
 
 
+
+def dft(n, scale=None):
+    """
+    e^(-2pi*i*k*n/ N)
+    """
+    omegas = np.exp(-2j * np.pi * np.arange(n) / n).reshape(-1, 1)
+    m = omegas ** np.arange(n)
+    if scale == 'sqrt':
+        m /= math.sqrt(n)
+    elif scale == 'n':
+        m /= n
+    return m
+
+
+def pascal(n, kind='symmetric', exact=True):
+    pass
+
+
 def pauli_matriks(A):
     A = _array_square(A)
-    
+    pass
 
 
 def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
