@@ -81,8 +81,76 @@ def pascal(n, kind='symmetric', exact=True):
 
 
 def pauli_matriks(A):
-    A = _array_square(A)
-    pass
+    """
+    matriks pauli
+    """
+
+    if A == "x":
+        colum = []
+        for i in range(2):
+            row = []
+            for j in range(2):
+                if i == j:
+                    row.append(0)
+                else:
+                    row.append(1)
+            colum.append(row)
+        return np.array(colum)
+
+    elif A == "z":
+        colum = []
+        for i in range(2):
+            row = []
+            for j in range(2):
+                if i == j:
+                    row.append(1)
+                else:
+                    row.append(0)
+            colum.append(row)
+        return np.array(colum)
+
+    elif A == "y":
+        colum = []
+        for i in range(2):
+            row = []
+            for j in range(2):
+                if i == j:
+                    row.append(1)
+                else:
+                    row.append(0)
+            colum.append(row)
+        return np.array(colum)
+
+
+def hankel_matriks(A, b=1):
+    res = []
+    for i in range(b, A+1):
+        row = []
+        for j in range(b, A+1):
+            row.append(i + j - 1)
+        res.append(row)
+    return np.array(res)
+
+
+def hilbert_matriks(A, b=1):
+    res = []
+    for i in range(b, A+1):
+        row = []
+        for j in range(b, A+1):
+            row.append(1/(i + j - 1))
+        res.append(row)
+    return np.array(res)
+
+
+def toeplite_matriks(A, b=1):
+    res = []
+    for i in range(b, A+1):
+        row = []
+        for j in range(b, A+1):
+            row.append((i - 1))
+        res.append(row)
+    return np.array(res)
+
 
 
 def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
