@@ -2,7 +2,7 @@ from util import error
 from typing import Union
 
 
-def factorial(n : int) -> Union[int, error.ErrorValue]:
+def factorial(n) -> Union[int, error.ErrorValue]:
     """
     Fungsi untuk melakukan kalkulasi faktorial
 
@@ -14,13 +14,15 @@ def factorial(n : int) -> Union[int, error.ErrorValue]:
     Returns:
     f (int) : hasil dari kalkulasi faktorial
     """
-    if n <= 0:
+    if n < 0:
         return error.ErrorValue("Nilai tidak boleh di bawah nol")
+    if n == 0:
+        return 1
     else:
         f = 1
         for i in range(1, n + 1):
             f *= i
-            return f
+        return f
 
 
 def kombinasi(n : int, r : int) -> Union[int, error.ErrorValue]:
@@ -37,8 +39,10 @@ def kombinasi(n : int, r : int) -> Union[int, error.ErrorValue]:
     return:
     C = hasil fungsi kombinasi
     """
-    if n <= 0 or r <= 0:
+    if n < 0 or r < 0:
         return error.ErrorValue("Nilai tidak boleh kurang dari nol")
+    if r > n:
+        return 0
     else:
         penyebut = factorial(n)
         pembilang = factorial(r) * factorial(n - r)

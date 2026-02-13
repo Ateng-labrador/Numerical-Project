@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from typing import Union
-from util import error as error
+from ..util import error as error
 import matfuctions as mathf
 
 
@@ -13,7 +13,6 @@ def _array_square(A):
     if len(A.shape) != 2 or A.shape[0] != A.shape[1]:
         raise ValueError('input nya tidak sesuai array')
     return A
-
 
 def identity(n : int = 2) -> list[list[Union[int, float]]]:
     """
@@ -62,7 +61,6 @@ def zeros(n : int , m : int = None) -> list[list[int]]:
         return matriks
 
 
-
 def dft(n, scale=None):
     """
     e^(-2pi*i*k*n/ N)
@@ -77,7 +75,26 @@ def dft(n, scale=None):
 
 
 def pascal(n, kind='symmetric', exact=True):
-    pass
+    """
+    
+    """
+    from special_functions import kombinasi
+    if kind not in ['symmetric', 'lower', 'upper']:
+        return error.Error("Tipe harus 'symmetric', 'lower', atau 'upper'")
+    L_n = []
+    for i in range(n):
+        colum = []
+        for j in range(n):
+            x = kombinasi(i, j)
+            colum.append(x)
+        L_n.append(colum)
+    x = _array_square(L_n)
+    if kind.lower() == 'lower':
+        return x
+    elif kind.lower() == 'upper':
+        return x.T
+    else:
+        return np.dot(x , x.T)
 
 
 def pauli_matriks(A):
@@ -153,7 +170,7 @@ def toeplite_matriks(A, b=1):
 
 
 
-def dot(A : Union[int, float], B : Union[int, float]) -> Union[int, float]:
+def dot(A, B):
     """
     Fungsi untuk melakukan perkalian dot
 
@@ -542,9 +559,3 @@ def rotation(matriks : list[list[Union[int, float]]],
     else:
         return error.IndeksError("Indeks tidak terdefinisi")
 
-
-
-
-if __name__ == "__main__":
-    pass
-    
