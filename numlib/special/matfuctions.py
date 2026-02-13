@@ -33,7 +33,3 @@ def square(x : list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
             A = x[i] * x[i]
             result.append(A)
         return result
-                
-
-if __name__ == "__main__":
-    pass

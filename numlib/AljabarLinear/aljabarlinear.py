@@ -1,8 +1,18 @@
+# Import Util error
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from typing import Union
+
 import numpy as np
 import math
-from typing import Union
-from ..util import error as error
-import matfuctions as mathf
+
+from util import error
+from special import *
+
+
+__all__ = []
 
 
 def _array_square(A):
@@ -78,7 +88,7 @@ def pascal(n, kind='symmetric', exact=True):
     """
     
     """
-    from special_functions import kombinasi
+    from special.special_functions import kombinasi
     if kind not in ['symmetric', 'lower', 'upper']:
         return error.Error("Tipe harus 'symmetric', 'lower', atau 'upper'")
     L_n = []
@@ -96,6 +106,7 @@ def pascal(n, kind='symmetric', exact=True):
     else:
         return np.dot(x , x.T)
 
+print(pascal(5, kind='anjing'))
 
 def pauli_matriks(A):
     """
