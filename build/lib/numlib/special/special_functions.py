@@ -1,11 +1,6 @@
 from numlib.util import error
 from typing import Union
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-
 
 def factorial(n) -> Union[int, error.ErrorValue]:
     """

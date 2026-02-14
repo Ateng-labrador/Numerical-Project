@@ -2,11 +2,6 @@ from typing import Union
 import numpy as np
 from numlib.util import error as error
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-
 
 def sum(x : list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
     if isinstance(x, list) and isinstance(x[0], list):

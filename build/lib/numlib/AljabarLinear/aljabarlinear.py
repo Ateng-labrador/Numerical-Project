@@ -4,11 +4,6 @@ from numlib.util import error
 from numlib.special import *
 from typing import Union
 
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-
 
 def _array_square(A):
     """
@@ -68,15 +63,7 @@ def zeros(n : int , m : int = None) -> list[list[int]]:
 
 def dft(n, scale=None):
     """
-    Membuat Matriks DFT
-
-    Parameters:
-    n(int) = ukuran matriks
-    scale(str) : skala matriks
-
-    Returns:
-    m = (n, n) matriks
-    
+    e^(-2pi*i*k*n/ N)
     """
     omegas = np.exp(-2j * np.pi * np.arange(n) / n).reshape(-1, 1)
     m = omegas ** np.arange(n)
@@ -87,16 +74,9 @@ def dft(n, scale=None):
     return m
 
 
-def pascal(n, kind='symmetric'):
+def pascal(n, kind='symmetric', exact=True):
     """
-    Fungsi untuk membuat matriks pascal
-
-    parameter :
-    n(int) = ukuran (n * n)
-    kind(str) = bentuk matriks
-
-    return :
-    x = matriks
+    
     """
     if kind not in ['symmetric', 'lower', 'upper']:
         return error.Error("Tipe harus 'symmetric', 'lower', atau 'upper'")
@@ -118,13 +98,7 @@ def pascal(n, kind='symmetric'):
 
 def pauli_matriks(A):
     """
-    Membuat Matriks Pauli
-
-    parameter:
-    A = 
-
-    return :
-    matriks 
+    matriks pauli
     """
 
     if A == "x":
@@ -165,9 +139,6 @@ def pauli_matriks(A):
 
 
 def hankel_matriks(A, b=1):
-    """
-    
-    """
     res = []
     for i in range(b, A+1):
         row = []
@@ -178,9 +149,6 @@ def hankel_matriks(A, b=1):
 
 
 def hilbert_matriks(A, b=1):
-    """
-    
-    """
     res = []
     for i in range(b, A+1):
         row = []
@@ -191,9 +159,6 @@ def hilbert_matriks(A, b=1):
 
 
 def toeplite_matriks(A, b=1):
-    """
-    
-    """
     res = []
     for i in range(b, A+1):
         row = []
@@ -420,6 +385,13 @@ def subti_forward(U : list[list[Union[int, float]]],
         x[i] = sum / U[i][i]
     return x
 
+
+#*
+# matriks khusus
+# matriks simetris
+# matriks definit positif
+# matriks pita (banded matrix)
+# *#
 
 def LU(A : list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
     """

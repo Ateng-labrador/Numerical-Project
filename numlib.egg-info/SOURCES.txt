@@ -1,0 +1,16 @@
+pyproject.toml
+numlib/__init__.py
+numlib.egg-info/PKG-INFO
+numlib.egg-info/SOURCES.txt
+numlib.egg-info/dependency_links.txt
+numlib.egg-info/top_level.txt
+numlib/AljabarLinear/__init__.py
+numlib/AljabarLinear/aljabarlinear.py
+numlib/special/__init__.py
+numlib/special/matfuctions.py
+numlib/special/special_functions.py
+numlib/special/test/__init__.py
+numlib/special/test/test_mathfuctions.py
+numlib/special/test/test_special_functions.py
+numlib/util/__init__.py
+numlib/util/error.py
