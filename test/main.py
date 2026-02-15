@@ -1,6 +1,6 @@
-from numlib import aljabarlinear 
+from AljabarLinear import special_matriks
 
 
-x = aljabarlinear.pascal(5, kind='anjing')
+x = special_matriks.test()
 
 print(x)

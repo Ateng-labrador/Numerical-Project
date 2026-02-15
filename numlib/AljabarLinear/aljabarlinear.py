@@ -13,6 +13,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 def _array_square(A):
     """
     Mengubah menjadi array
+
+    parameter:
+    A(list[list]) = matriks
+
+    return:
+    A(array) = matriks array
     """
     A = np.asarray(A)
     if len(A.shape) != 2 or A.shape[0] != A.shape[1]:
@@ -99,7 +105,7 @@ def pascal(n, kind='symmetric'):
     x = matriks
     """
     if kind not in ['symmetric', 'lower', 'upper']:
-        return error.Error("Tipe harus 'symmetric', 'lower', atau 'upper'")
+        raise ValueError("Tipe harus 'symmetric', 'lower', atau 'upper'")
     L_n = []
     for i in range(n):
         colum = []
@@ -116,57 +122,59 @@ def pascal(n, kind='symmetric'):
         return np.dot(x , x.T)
 
 
-def pauli_matriks(A):
+def pauli_matriks(A = None):
     """
     Membuat Matriks Pauli
 
+    Matriks pauli dibuat menjadi 3 matriks x, y, z
+    
     parameter:
-    A = 
+    A(str) = pilih koordinat
 
     return :
-    matriks 
+    colum(array) = matriks 2 * 2
     """
 
+    colum = []
+    for i in range(2):
+        row = []
+        for j in range(2):
+            if i == j:
+                row.append(0)
+            else:
+                row.append(1)
+        colum.append(row)
+
+    x = copy(_array_square(colum))
+    y = copy(_array_square(colum))
+    z = copy(_array_square(colum))
+
     if A == "x":
-        colum = []
-        for i in range(2):
-            row = []
-            for j in range(2):
-                if i == j:
-                    row.append(0)
-                else:
-                    row.append(1)
-            colum.append(row)
-        return np.array(colum)
+        return x
 
     elif A == "z":
-        colum = []
-        for i in range(2):
-            row = []
-            for j in range(2):
-                if i == j:
-                    row.append(1)
-                else:
-                    row.append(0)
-            colum.append(row)
-        return np.array(colum)
+        return z
 
     elif A == "y":
-        colum = []
-        for i in range(2):
-            row = []
-            for j in range(2):
-                if i == j:
-                    row.append(1)
-                else:
-                    row.append(0)
-            colum.append(row)
-        return np.array(colum)
+        return y
+
+    elif A == None:
+        return x, y, z
+
+    else:
+        return error.Error("Masukkan harus x, y, z")
 
 
 def hankel_matriks(A, b=1):
     """
-    
+    Membuat matriks Hankel
+
+    parameter:
+    A(int) = ukuran matriks
+    b(int) = start angka
+
+    return:
+    res(array) = matriks(A * A)
     """
     res = []
     for i in range(b, A+1):
@@ -179,7 +187,14 @@ def hankel_matriks(A, b=1):
 
 def hilbert_matriks(A, b=1):
     """
-    
+    Membuat Matriks Hilbert
+
+    parameter:
+    A(int) = ukuran matriks
+    b(int) = start angka
+
+    return:
+    res(array) = matriks(A * A)
     """
     res = []
     for i in range(b, A+1):
@@ -190,17 +205,24 @@ def hilbert_matriks(A, b=1):
     return np.array(res)
 
 
-def toeplite_matriks(A, b=1):
+def toeplite_matriks(A, b = 1):
     """
-    
+    Membuat matriks toeplite
+
+    parameters:
+    A(int) = ukuran matriks
+    b(int) = start angka
+
+    return:
+    res(array) = matriks(A*A)
     """
     res = []
     for i in range(b, A+1):
         row = []
         for j in range(b, A+1):
-            row.append((i - 1))
+            row.append((i - j))
         res.append(row)
-    return np.array(res)
+    return _array_square(res)
 
 
 
@@ -249,15 +271,15 @@ def cross(A : Union[int, float],
 
 def copy(A : Union[int, float]) -> list[list[Union[int, float]]]:
     """
-    Fungsi untuk melakukan copy matriks
+    Copy matriks
+
+    parameters:
+    A(list[list]) = matriks singular
+
+    return:
+    res(int) = matriks
     """
-    res = []
-    for i in range(len(A)):
-        row = []
-        for j in range(len(A)):
-            row.append(A[i][j])
-        res.append(row)
-    return res
+    return np.copy(A)
 
 
 def penjumlahan(
@@ -369,7 +391,13 @@ def perkalian_skalar_matriks(
 
 def transpose(A: list[list[Union[int, float]]]) -> list[list[Union[int, float]]]:
     """
-    
+    Fungsi untuk memutar matriks
+
+    parameter:
+    A(list[list]) = matriks
+
+    return:
+    x(list[list]) = matriks
     """
     x = [[A[j][i] for j in range(len(A))] for i in range(len(A[0]))]
     return x
